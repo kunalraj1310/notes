@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Notes</title>
+
+     <!-- Correct CSS Link -->
+    <link rel="stylesheet" href="/stylesheet/index.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+
+    <!-- Heading -->
+    <h1 class="pt-10 text-5xl font-bold text-blue-800 tracking-wide">
+        Notes
+    </h1>
+
+    <!-- Notes Card -->
+    <div class="bg-white shadow-2xl rounded-2xl p-8 mt-16 w-[600px]">
+
+        <!-- File Name -->
+        <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-500 pb-3">
+            <%= filen %>
+        </h2>
+
+        <!-- Note Content -->
+        <h4 class="text-lg text-gray-700 leading-8 mt-6">
+            Notes: <%= datadetails %>
+        </h4>
+    
+        
+    </div>
+
+</body>
+</html>
