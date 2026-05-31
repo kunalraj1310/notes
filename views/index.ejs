@@ -1,139 +1,154 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
+    <title>Draftly - Notes Taking WebApp</title>
 
-    <link rel="stylesheet" href="/stylesheet/index.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+```
+<link rel="icon" type="image/png" href="/images/notes-app-icon.png">
+<link rel="stylesheet" href="/stylesheet/index.css">
+
+<script src="https://cdn.tailwindcss.com"></script>
+```
+
 </head>
 
-<body class="bg-gradient-to-r from-blue-100 to-indigo-200 min-h-screen">
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 min-h-screen">
 
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-6 py-10">
+```
+<div class="max-w-7xl mx-auto px-6 py-10">
 
-        <!-- Heading -->
-        <div class="text-center mb-12">
+    <!-- Header -->
+    <div class="text-center mb-12">
 
-            <h1 class="text-5xl font-extrabold text-blue-900 drop-shadow-lg">
-                Notes Application
-            </h1>
+        <h1 class="text-6xl font-black text-blue-900">
+            Draftly
+        </h1>
 
-            <p class="text-gray-700 mt-3 text-lg">
-                Create and manage your personal notes beautifully.
-            </p>
+        <p class="text-gray-600 mt-3 text-lg">
+            Capture ideas, save notes, stay organized.
+        </p>
 
-        </div>
+    </div>
 
-        <!-- Form Card -->
-        <div class="bg-white shadow-2xl rounded-3xl p-8 w-full md:w-[500px] mx-auto">
+    <!-- Create Note Form -->
+    <div class="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-xl mx-auto">
 
-            <form action="/create" method="POST">
+        <form action="/create" method="POST">
 
-                <!-- Title -->
-                <label class="text-gray-700 font-semibold block mb-2">
-                    Title
-                </label>
+            <label class="block text-gray-700 font-semibold mb-2">
+                Title
+            </label>
 
-                <input
-                    class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300"
-                    type="text"
-                    name="title"
-                    placeholder="Enter note title"
-                >
+            <input
+                type="text"
+                name="title"
+                required
+                placeholder="Enter note title"
+                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-300 transition"
+            >
 
-                <!-- Notes -->
-                <label class="text-gray-700 font-semibold block mt-6 mb-2">
-                    Notes
-                </label>
+            <label class="block text-gray-700 font-semibold mt-6 mb-2">
+                Notes
+            </label>
 
-                <textarea
-                    class="w-full border border-gray-300 rounded-xl px-4 py-3 h-32 resize-none focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300"
-                    name="details"
-                    placeholder="Write your notes here..."
-                ></textarea>
+            <textarea
+                name="note"
+                required
+                rows="5"
+                placeholder="Write your notes here..."
+                class="w-full border border-gray-300 rounded-xl px-4 py-3 resize-none focus:outline-none focus:ring-4 focus:ring-blue-300 transition"
+            ></textarea>
 
-                <!-- Submit -->
-                <button
-                    class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl mt-8 shadow-lg transition duration-300"
-                    type="submit"
-                >
-                    Create Note
-                </button>
+            <button
+                type="submit"
+                class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl mt-8 transition"
+            >
+                Create Note
+            </button>
 
-            </form>
+        </form>
 
-        </div>
+    </div>
 
-        <!-- Notes Heading -->
-        <h2 class="text-4xl font-bold text-gray-800 mt-16 mb-8 text-center">
-            Your Notes
-        </h2>
+    <!-- Notes Section -->
+    <h2 class="text-4xl font-bold text-gray-800 text-center mt-16 mb-10">
+        Your Notes
+    </h2>
 
-        <!-- Notes Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <% if (files.length > 0) { %>
+        <% if(notes.length > 0){ %>
 
-                <% files.forEach(function(val) { %>
+            <% notes.forEach(function(val){ %>
 
-                    <!-- Note Card -->
-                    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition duration-300">
+                <div class="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-6 flex flex-col justify-between">
 
-                        <!-- Note Icon -->
+                    <div>
+
                         <div class="text-5xl mb-4">
                             📝
                         </div>
 
-                        <!-- File Name -->
                         <h3 class="text-xl font-bold text-gray-800 break-words">
-                            <%= val %>
+                            <%= val.title %>
                         </h3>
 
-                        <!-- Read More -->
+                        <p class="text-gray-500 mt-3 text-sm leading-6">
+                            <%= val.note.length > 100 ? val.note.substring(0,100) + '...' : val.note %>
+                        </p>
+
+                    </div>
+
+                    <div class="flex gap-3 mt-6">
+
                         <a
-                            href="/file/<%= val %>"
-                            class="inline-block mt-5 text-blue-700 font-semibold hover:underline"
+                            href="/file/<%= val._id %>"
+                            class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl font-semibold transition"
                         >
-                            Read More →
-                        
-                         <!-- Delete -->
-                        <a href="/delete/<%= val %>"
+                            Read
+                        </a>
+
+                        <a
+                            href="/delete/<%= val._id %>"
                             onclick="return confirm('Are you sure you want to delete this note?')"
-                            >
-                            <button
-                                class="mt-4 w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-2 rounded-xl shadow-lg transition duration-300"
-                             >
-                                🗑 Delete
-                             </button>
+                            class="flex-1 text-center bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold transition"
+                        >
+                            Delete
                         </a>
 
                     </div>
 
-                <% }) %>
-
-            <% } else { %>
-
-                <!-- Empty State -->
-                <div class="col-span-full text-center">
-
-                    <h3 class="text-2xl font-bold text-gray-700">
-                        No Notes Available
-                    </h3>
-
-                    <p class="text-gray-500 mt-2">
-                        Create your first note to get started.
-                    </p>
-
                 </div>
 
-            <% } %>
+            <% }) %>
 
-        </div>
+        <% } else { %>
+
+            <div class="col-span-full text-center py-12">
+
+                <div class="text-7xl mb-4">
+                    📒
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-700">
+                    No Notes Available
+                </h3>
+
+                <p class="text-gray-500 mt-2">
+                    Create your first note to get started.
+                </p>
+
+            </div>
+
+        <% } %>
 
     </div>
+
+</div>
+```
 
 </body>
 </html>

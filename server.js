@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
+const notesSchema = require("./models/notes");
+const { title } = require("process");
 
 const app = express();
 
@@ -19,85 +20,61 @@ app.set("view engine", "ejs");
 
 
 // Home Route
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 
-    fs.readdir("./files", (err, files) => {
+    const notes = await notesSchema.find()
 
-        if (err) {
-            console.log(err);
-            return res.send("Error reading files");
-        }
-
-        res.render("index", { files });
+        res.render("index", {notes});
 
     });
 
-});
+
 
 
 // Create Note Route
-app.post("/create", (req, res) => {
-
-    const filename =
-        req.body.title.split(" ").join("") + ".txt";
-
-    const details = req.body.details;
-
-    fs.writeFile(`./files/${filename}`, details, (err) => {
-
-        if (err) {
-            console.log(err);
-            return res.send("Error creating file");
-        }
+app.post("/create", async (req, res) => {
+    await notesSchema.create({
+        title: req.body.title,
+        note: req.body.note
+    })
 
         res.redirect("/");
 
-    });
-
 });
+
+
 
 
 // Read Note Route
-app.get("/file/:filename", (req, res) => {
+app.get("/file/:filename", async (req, res) => {
 
     const filename = req.params.filename;
-
-    fs.readFile(`./files/${filename}`, "utf-8", (err, data) => {
-
-        if (err) {
-            console.log(err);
-            return res.send("Error reading file");
-        }
-
-        res.render("read", {
-            filen: filename,
-            datadetails: data
-        });
-
+    const usernote = await notesSchema.findOne({_id :filename})
+    
+        res.render("read",{usernote});
     });
-
-});
-
 // deleting note 
 
-app.get("/delete/:filename", (req, res) => {
+app.get("/delete/:filename", async (req, res) => {
 
     const filename = req.params.filename;
-
-    fs.unlink(`./files/${filename}`, (err) => {
-
-        if (err) {
-            console.log(err);
-            return res.send("Error deleting file");
-        }
-
-        res.redirect("/");
-
-    });
-
+    await notesSchema.findOneAndDelete({_id :filename})
+     res.redirect('/')
 });
- 
+
+//editing note 
+
+app.get("/edit/:edit", async (req,res)=>{
+    const edit = await notesSchema.findOne({_id:req.params.edit})
+    res.render("edit",{edit:edit})
+})
+ //update note 
+ app.post("/update/:update" , async (req,res)=>{
+    await notesSchema.findOneAndUpdate({_id:req.params.update}, {
+        title:req.body.editedtitle,
+        note: req.body.editednote
+    })
+    res.redirect(`/file/${req.params.id}`);
+ })
 // Server
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
+module.exports = app;

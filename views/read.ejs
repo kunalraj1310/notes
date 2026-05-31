@@ -2,35 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=\, initial-scale=1.0">
-    <title>Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - <%= usernote.title %></title>
 
-     <!-- Correct CSS Link -->
     <link rel="stylesheet" href="/stylesheet/index.css">
-
+    <link rel="icon" type="image/png" href="/images/notes-app-icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex flex-col items-center p-6">
+
+    <!-- Back Button -->
+    <a href="/"
+       class="self-start text-blue-700 font-semibold hover:text-blue-900 transition">
+        ← Create New Note
+    </a>
 
     <!-- Heading -->
-    <h1 class="pt-10 text-5xl font-bold text-blue-800 tracking-wide">
+    <h1 class="text-5xl font-bold text-blue-800 mt-8">
         Notes
     </h1>
 
-    <!-- Notes Card -->
-    <div class="bg-white shadow-2xl rounded-2xl p-8 mt-16 w-[600px]">
+    <!-- Card -->
+    <div class="bg-white shadow-xl rounded-3xl p-8 mt-10 w-full max-w-3xl">
 
-        <!-- File Name -->
-        <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-500 pb-3">
-            <%= filen %>
+        <!-- Title -->
+        <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-500 pb-4">
+            <%= usernote.title %>
         </h2>
 
-        <!-- Note Content -->
-        <h4 class="text-lg text-gray-700 leading-8 mt-6">
-            Notes: <%= datadetails %>
-        </h4>
-    
-        
+        <!-- Content -->
+        <div class="mt-6">
+            <p class="text-lg text-gray-700 leading-8 whitespace-pre-wrap">
+                <%= usernote.note %>
+            </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-4 mt-8">
+            <a href="/edit/<%= usernote._id %>"
+               class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-xl font-semibold transition">
+                Edit Note
+            </a>
+
+            <a href="/"
+               class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-xl font-semibold transition">
+                Back
+            </a>
+        </div>
+
     </div>
 
 </body>
