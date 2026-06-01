@@ -1,10 +1,21 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/notesapp')
+const mongoString = process.env.MONGO_URI;
 
-const notesSchema = mongoose.Schema({
-    title: String,
-    note : String
-})
+mongoose.connect(mongoString)
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err) => console.log(err));
 
-module.exports = mongoose.model("note", notesSchema)
+const notesSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    note: {
+        type: String,
+        required: true
+    }
+});
+
+module.exports = mongoose.model("Note", notesSchema);
