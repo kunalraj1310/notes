@@ -181,7 +181,7 @@ app.post("/create", isLoggedIn, async (req, res) => {
 
 // ==================== Read Note ====================
 
-app.get("/file/:filename", async (req, res) => {
+app.get("/file/:filename",isLoggedIn, NoteOwner,  async (req, res) => {
 
     const filename = req.params.filename;
 
@@ -195,7 +195,7 @@ app.get("/file/:filename", async (req, res) => {
 
 // ==================== Delete Note ====================
 
-app.get("/delete/:filename", isLoggedIn, async (req, res) => {
+app.get("/delete/:filename", isLoggedIn,NoteOwner, async (req, res) => {
 
     const user = await userSchema.findOne({
         email: req.user.email
@@ -217,7 +217,7 @@ app.get("/delete/:filename", isLoggedIn, async (req, res) => {
 
 // ==================== Edit Note ====================
 
-app.get("/edit/:edit", isLoggedIn, async (req, res) => {
+app.get("/edit/:edit", isLoggedIn,NoteOwner,async (req, res) => {
 
     const edit = await notesSchema.findOne({
         _id: req.params.edit
@@ -229,7 +229,7 @@ app.get("/edit/:edit", isLoggedIn, async (req, res) => {
 
 // ==================== Update Note ====================
 
-app.post("/update/:update", isLoggedIn, async (req, res) => {
+app.post("/update/:update", isLoggedIn,NoteOwner,async (req, res) => {
 
     await notesSchema.findOneAndUpdate(
         { _id: req.params.update },
@@ -243,6 +243,19 @@ app.post("/update/:update", isLoggedIn, async (req, res) => {
 });
 
 
+async function NoteOwner (req,res,next){
+    const token = req.cookies.token
+     const usertoken = jwt.verify(token, process.env.JWT_SEC);
+        req.user = usertoken;
+    const user = await userSchema.findOne({email:req.user.email})
+    
+    const result = user.notes.includes(req.params.update)
+    if(result){
+        next()
+    }else{
+        res.send("you are not authorised for this ")
+    }
+}
 // ==================== Export ====================
 
 
