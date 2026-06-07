@@ -35,11 +35,11 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
-app.get("/register", (req, res) => {
+app.get("/register",directLogin, (req, res) => {
     res.render("register");
 });
 
-app.get("/login", (req, res) => {
+app.get("/login",directLogin, (req, res) => {
     res.render("login");
 });
 
@@ -77,10 +77,25 @@ app.post("/register", async (req, res) => {
 });
 
 
+// ==================== Direct Login ====================
+function directLogin (req,res,next){
+    const token = req.cookies.token;
+
+    if (!token) {
+        return next();
+    }
+
+    try {
+
+        const result = jwt.verify(token, process.env.JWT_SEC);
+        return res.redirect("/createnotes")
+    } catch (err) {
+        return next();
+    }
+}
 // ==================== Login ====================
-
 app.post("/login", async (req, res) => {
-
+    
     const user = await userSchema.findOne({
         email: req.body.email
     });
@@ -146,9 +161,6 @@ function isLoggedIn(req, res, next) {
 
 // =============== Authorisation of Note Owner ===========
 async function NoteOwner (req,res,next){
-    const token = req.cookies.token
-     const usertoken = jwt.verify(token, process.env.JWT_SEC);
-        req.user = usertoken;
     const user = await userSchema.findOne({email:req.user.email})
     const id = req.params.id
     const result = user.notes.includes(id)
