@@ -31,7 +31,7 @@ app.set("view engine", "ejs");
 
 // ==================== Home Routes ====================
 
-app.get("/", (req, res) => {
+app.get("/",directLogin, (req, res) => {
     res.render("home");
 });
 
