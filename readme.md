@@ -55,8 +55,8 @@ Follow these steps to get a local copy of Draftly up and running on your machine
 
 1. Clone the Repository
 ```text
-git clone [https://github.com/kunalraj1310/notes.git](https://github.com/kunalraj1310/notes.git)
-cd notes
+git clone [https://github.com/kunalraj1310/draftly.git](https://github.com/kunalraj1310/draftly.git)
+cd draftly
 ```
 2. Install Dependencies
 ```
