@@ -1,8 +1,8 @@
 {
-  "name": "backend-auth",
+  "name": "Draftly",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
+  "description": " A NOTE TAKING APP",
+  "license": "ISC , MIT",
   "author": "Kunal Raj",
   "type": "commonjs",
   "main": "server.js",
